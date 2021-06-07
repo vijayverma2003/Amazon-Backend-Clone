@@ -2,9 +2,13 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const categories = require("./routes/categories");
+const products = require("./routes/products");
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 app.use(express.json());
 app.use("/api/categories", categories);
+app.use("/api/products", products);
 
 mongoose
   .connect("mongodb://localhost/amazon", {
