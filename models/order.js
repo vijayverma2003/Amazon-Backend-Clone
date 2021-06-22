@@ -60,6 +60,8 @@ const validateOrders = (order) => {
     phone: Joi.number().required().label("Phone Number"),
     productId: Joi.objectId().required().label("Product ID"),
     userId: Joi.objectId().required().label("User ID"),
+    dateShipped: Joi.date().label("Shipping Date"),
+    dateOut: Joi.date().label("Date Out"),
   });
 
   return schema.validate(order);
