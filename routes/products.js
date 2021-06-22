@@ -22,6 +22,7 @@ router.post("/", async (req, res) => {
       name: category.name,
     },
     description: req.body.description,
+    imageUrl: req.body.imageUrl,
     inWishList: req.body.inWishList,
     label: req.body.label,
     listPrice: req.body.listPrice,
@@ -48,6 +49,7 @@ router.put("/:id", async (req, res) => {
       $set: {
         categoryId: req.body.categoryId,
         description: req.body.description,
+        imageUrl: req.body.imageUrl,
         inWishList: req.body.inWishList,
         label: req.body.label,
         listPrice: req.body.listPrice,

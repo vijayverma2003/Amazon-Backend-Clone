@@ -16,6 +16,12 @@ const productSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  imageUrl: {
+    type: String,
+    minlength: 10,
+    maxlength: 1255,
+    required: true,
+  },
   price: {
     required: true,
     type: Number,
@@ -58,6 +64,7 @@ const validateProduct = (product) => {
   const schema = Joi.object({
     categoryId: Joi.objectId().required(),
     description: Joi.string().min(50).max(4000).required(),
+    imageUrl: Joi.string().min(10).max(1255).required(),
     inWishList: Joi.boolean(),
     label: Joi.string().required().min(5).max(50),
     listPrice: Joi.number(),
