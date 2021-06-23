@@ -16,6 +16,20 @@ router.post("/", async (req, res) => {
   const category = await Category.findById(req.body.categoryId);
   if (!category) return res.status(400).send("Invalid Category");
 
+  const titleTags = req.body.title
+    .toLowerCase()
+    .split(" ")
+    .filter((token) => {
+      return token.trim() !== 0;
+    });
+
+  const descriptionTags = req.body.description
+    .toLowerCase()
+    .split(" ")
+    .filter((token) => {
+      return token.trim !== 0;
+    });
+
   const product = new Product({
     category: {
       _id: category._id,
@@ -31,6 +45,7 @@ router.post("/", async (req, res) => {
     stock: req.body.stock,
     title: req.body.title,
     quantityInCart: req.body.quantityInCart,
+    tags: [...titleTags, ...descriptionTags],
   });
   await product.save();
   res.send(product);

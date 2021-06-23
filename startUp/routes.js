@@ -1,10 +1,10 @@
 const express = require("express");
 const error = require("../middleware/error");
-const categories = require("./routes/categories");
-const products = require("./routes/products");
-const users = require("./routes/users");
-const orders = require("./routes/orders");
-const auth = require("./routes/auth");
+const categories = require("../routes/categories");
+const products = require("../routes/products");
+const users = require("../routes/users");
+const orders = require("../routes/orders");
+const auth = require("../routes/auth");
 
 module.exports = function (app) {
   app.use(express.json());

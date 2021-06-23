@@ -56,6 +56,10 @@ const productSchema = new mongoose.Schema({
     max: 999,
     type: Number,
   },
+  tags: {
+    type: [String],
+    required: true,
+  },
 });
 
 const Product = mongoose.model("Products", productSchema);
