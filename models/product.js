@@ -5,7 +5,7 @@ const { categorySchema } = require("./category");
 
 const productSchema = new mongoose.Schema({
   label: {
-    maxlength: 50,
+    maxlength: 200,
     minlength: 5,
     required: true,
     type: String,
@@ -28,6 +28,7 @@ const productSchema = new mongoose.Schema({
   },
   listPrice: {
     type: Number,
+    default: 0,
   },
   category: {
     required: true,
@@ -60,17 +61,24 @@ const productSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  by: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 30,
+  },
 });
 
 const Product = mongoose.model("Products", productSchema);
 
 const validateProduct = (product) => {
   const schema = Joi.object({
+    by: Joi.string().required().min(3).max(30),
     categoryId: Joi.objectId().required(),
     description: Joi.string().min(50).max(4000).required(),
     imageUrl: Joi.string().min(10).max(1255).required(),
     inWishList: Joi.boolean(),
-    label: Joi.string().required().min(5).max(50),
+    label: Joi.string().required().min(5).max(200),
     listPrice: Joi.number(),
     price: Joi.number().required(),
     quantityInCart: Joi.number().max(999),

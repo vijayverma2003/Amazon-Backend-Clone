@@ -9,6 +9,13 @@ router.get("/", async (req, res) => {
   res.send(products);
 });
 
+router.get("/:id", async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  if (!product) return res.status(400).send("Invalid Product");
+
+  res.send(product);
+});
+
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -31,6 +38,7 @@ router.post("/", async (req, res) => {
     });
 
   const product = new Product({
+    by: req.body.by,
     category: {
       _id: category._id,
       name: category.name,
@@ -48,6 +56,7 @@ router.post("/", async (req, res) => {
     tags: [...titleTags, ...descriptionTags],
   });
   await product.save();
+
   res.send(product);
 });
 
@@ -55,14 +64,22 @@ router.put("/:id", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const category = await Category.findById(req.body.categoryId);
+  let product = await Product.findById(req.params.id);
+  if (!product) return res.status(400).send("Invalid Product");
+
+  let category = await Category.findById(req.body.categoryId);
   if (!category) return res.status(400).send("Invalid Category");
 
-  const product = await Product.findByIdAndUpdate(
-    { _id: req.params.id },
+  product = await Product.findByIdAndUpdate(
+    req.params.id,
     {
       $set: {
-        categoryId: req.body.categoryId,
+        _id: product._id,
+        by: req.body.by,
+        category: {
+          _id: category._id,
+          name: category.name,
+        },
         description: req.body.description,
         imageUrl: req.body.imageUrl,
         inWishList: req.body.inWishList,
@@ -73,12 +90,11 @@ router.put("/:id", async (req, res) => {
         stock: req.body.stock,
         title: req.body.title,
         quantityInCart: req.body.quantityInCart,
+        tags: product.tags,
       },
     },
     { new: true }
   );
-
-  if (!product) return res.status(400).send("Invalid Product");
 
   res.send(product);
 });
