@@ -13,11 +13,6 @@ const validate = (req) => {
   return schema.validate(req);
 };
 
-router.get("/", async (req, res) => {
-  const user = await User.find().sort("name");
-  res.send(user);
-});
-
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -29,7 +24,7 @@ router.post("/", async (req, res) => {
   if (!validPassword) return res.status(400).send("Invalid E-mail or Password");
 
   const token = user.generateAuthToken();
-  res.header("x-auth-token", token).send(token);
+  res.send(token);
 });
 
 module.exports = router;
